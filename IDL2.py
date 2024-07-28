@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import streamlit as st
 
 # Definimos las categorías permitidas
@@ -96,4 +95,3 @@ en_venta = st.radio("¿El producto está en venta?", ('Si', 'No'))
 
 if st.button("Agregar Producto"):
     crear_producto(nombre_producto, precio_producto, categorias_producto, en_venta)
->>>>>>> 874b8b5f36d9dbfdf528deaae252b4ef9b411661
