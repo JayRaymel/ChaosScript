@@ -5,6 +5,10 @@ import io
 # Definimos las categorías permitidas
 CATEGORIAS_PERMITIDAS = ['Chocolates', 'Caramelos', 'Mashmelos', 'Galletas', 'Salados', 'Gomas de mascar']
 
+# Inicializamos el estado de la sesión
+if 'productos' not in st.session_state:
+    st.session_state.productos = []
+
 def generar_excel(productos):
     """Genera un archivo Excel en memoria y lo devuelve como bytes."""
     df = pd.DataFrame(productos)
@@ -12,9 +16,6 @@ def generar_excel(productos):
     df.to_excel(buffer, index=False, engine='openpyxl')
     buffer.seek(0)
     return buffer
-
-# Cargamos los productos al iniciar la aplicación
-productos = []
 
 def validar_nombre(nombre):
     """Valida que el nombre del producto no exceda los 20 caracteres."""
@@ -57,7 +58,7 @@ def crear_producto(nombre, precio, categorias, en_venta):
             'categorias': ', '.join(categorias),
             'en_venta': en_venta
         }
-        productos.append(producto)
+        st.session_state.productos.append(producto)
         st.success("Felicidades, su producto se agregó.")
     except ValueError as e:
         st.error(f"Lo sentimos, no pudo crear este producto. Error: {e}")
@@ -77,12 +78,12 @@ if st.button("Agregar Producto"):
 
 # Mostrar productos agregados
 st.subheader("Productos agregados:")
-for prod in productos:
+for prod in st.session_state.productos:
     st.write(f"Nombre: {prod['nombre']}, Precio: {prod['precio']}, Categorías: {prod['categorias']}, En venta: {prod['en_venta']}")
 
 # Botón para descargar el archivo Excel
 if st.button("Descargar Excel"):
-    excel_file = generar_excel(productos)
+    excel_file = generar_excel(st.session_state.productos)
     st.download_button(
         label="Descargar productos.xlsx",
         data=excel_file,
