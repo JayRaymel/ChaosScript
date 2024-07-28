@@ -12,10 +12,11 @@ def cargar_productos():
 
 def guardar_productos(productos):
     df = pd.DataFrame(productos)
+    print(df)
     df.to_excel(FILE_PATH, index=False)
 
 productos = cargar_productos()
-
+    
 def validar_nombre(nombre):
     if len(nombre) > 20:
         raise ValueError("El nombre del producto no debe ser mayor a 20 caracteres.")
