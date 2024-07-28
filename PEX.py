@@ -16,7 +16,7 @@ def guardar_productos(productos):
     """Guarda la lista de productos en un archivo Excel."""
     try:
         df = pd.DataFrame(productos)
-        df.to_excel(FILE_PATH, index=False)
+        df.to_excel(FILE_PATH, index=False, engine='openpyxl')
     except ImportError as e:
         st.error(f"Error: El módulo necesario 'openpyxl' no está instalado. Por favor, instale el módulo usando `pip install openpyxl`.")
     except Exception as e:
@@ -89,4 +89,3 @@ if st.button("Agregar Producto"):
 st.subheader("Productos agregados:")
 for prod in productos:
     st.write(f"Nombre: {prod['nombre']}, Precio: {prod['precio']}, Categorías: {prod['categorias']}, En venta: {prod['en_venta']}")
-
