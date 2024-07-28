@@ -14,8 +14,11 @@ def cargar_productos():
 
 def guardar_productos(productos):
     """Guarda la lista de productos en un archivo Excel."""
-    df = pd.DataFrame(productos)
-    df.to_excel(FILE_PATH, index=False)
+    try:
+        df = pd.DataFrame(productos)
+        df.to_excel(FILE_PATH, index=False)
+    except Exception as e:
+        st.error(f"Error al guardar el archivo: {e}")
 
 # Cargamos los productos al iniciar la aplicación
 productos = cargar_productos()
