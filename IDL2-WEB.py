@@ -1,9 +1,20 @@
 import streamlit as st
+import pandas as pd
+import os
 
-# Definimos las categorías permitidas
 CATEGORIAS_PERMITIDAS = ['Chocolates', 'Caramelos', 'Mashmelos', 'Galletas', 'Salados', 'Gomas de mascar']
+FILE_PATH = 'productos.xlsx'
 
-productos = []
+def cargar_productos():
+    if os.path.exists(FILE_PATH):
+        return pd.read_excel(FILE_PATH).to_dict(orient='records')
+    return []
+
+def guardar_productos(productos):
+    df = pd.DataFrame(productos)
+    df.to_excel(FILE_PATH, index=False)
+
+productos = cargar_productos()
 
 def validar_nombre(nombre):
     if len(nombre) > 20:
@@ -38,10 +49,11 @@ def crear_producto(nombre, precio, categorias, en_venta):
         producto = {
             'nombre': nombre,
             'precio': precio,
-            'categorias': categorias,
+            'categorias': ', '.join(categorias),
             'en_venta': en_venta
         }
         productos.append(producto)
+        guardar_productos(productos)
         st.success("Felicidades, su producto se agregó.")
     except ValueError as e:
         st.error(f"Lo sentimos, no pudo crear este producto. Error: {e}")
@@ -58,4 +70,4 @@ if st.button("Agregar Producto"):
 
 st.subheader("Productos agregados:")
 for prod in productos:
-    st.write(f"Nombre: {prod['nombre']}, Precio: {prod['precio']}, Categorías: {', '.join(prod['categorias'])}, En venta: {prod['en_venta']}")
+    st.write(f"Nombre: {prod['nombre']}, Precio: {prod['precio']}, Categorías: {prod['categorias']}, En venta: {prod['en_venta']}")
