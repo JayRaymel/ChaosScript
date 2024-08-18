@@ -1,4 +1,4 @@
 pandas
-openpyxl==3.1.2
-streamlit==1.35.0
+openpyxl
+streamlit
 supabase
